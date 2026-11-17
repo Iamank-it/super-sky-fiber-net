@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-primary: #082B55;
+  --color-brand-primary-dark: #051A33;
+  --color-brand-primary-light: #0E4282;
+  --color-brand-secondary: #168BDE;
+  --color-brand-secondary-dark: #0F6EB2;
+  --color-brand-accent: #06B6D4;
+  --color-brand-accent-glow: #22D3EE;
+  --color-brand-surface: #F2F8FD;
+  --color-brand-surface-subtle: #E8F3FC;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FFFFFF;
+  --foreground: #082B55;
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-inter);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom modern fiber gradients and decorative patterns */
+.fiber-gradient-hero {
+  background: radial-gradient(135% 100% at 50% 0%, #082B55 0%, #061F3D 60%, #041429 100%);
+}
+
+.fiber-card-glow {
+  position: relative;
+  background: #FFFFFF;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fiber-card-glow:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -10px rgba(8, 43, 85, 0.12), 0 10px 15px -5px rgba(22, 139, 222, 0.08);
+}
+
+.fiber-glass-dark {
+  background: rgba(8, 43, 85, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(50, 213, 232, 0.15);
+}
+
+.fiber-glass-light {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(22, 139, 222, 0.15);
+}
+
+.fiber-beam-line {
+  background: linear-gradient(90deg, transparent, #32D5E8, #168BDE, transparent);
+  height: 2px;
+}
+
+/* Custom subtle pulse */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.9; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s infinite ease-in-out;
 }

@@ -1,0 +1,123 @@
+// Super Sky Fiber Net (SSFN) - PostgreSQL Production Prisma Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Enquiry {
+  id           String   @id @default(cuid())
+  customerName String
+  mobileNumber String
+  email        String?
+  locality     String
+  pinCode      String
+  address      String?
+  enquiryType  String   @default("NEW_CONNECTION")
+  selectedPlan String?
+  message      String?
+  status       String   @default("NEW")
+  adminNotes   String?
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([mobileNumber])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model BsnlPlan {
+  id                   String   @id @default(cuid())
+  externalPlanId       String   @unique
+  name                 String
+  monthlyPrice         Float
+  speed                String
+  speedMbps            Int
+  dataAllowance        String
+  fupSpeed             String?
+  validity             String   @default("1 Month")
+  installationCharges  Float    @default(0)
+  additionalBenefits   String?
+  circle               String   @default("Jharkhand")
+  sourceUrl            String
+  sourceLastVerifiedAt DateTime
+  isActive             Boolean  @default(true)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([speedMbps])
+  @@index([isActive])
+  @@index([circle])
+}
+
+model BsnlSyncLog {
+  id           String    @id @default(cuid())
+  startedAt    DateTime  @default(now())
+  completedAt  DateTime?
+  status       String    @default("PENDING")
+  plansFound   Int       @default(0)
+  plansUpdated Int       @default(0)
+  plansAdded   Int       @default(0)
+  plansRemoved Int       @default(0)
+  errorMessage String?
+  metadata     String?
+  createdAt    DateTime  @default(now())
+}
+
+model BsnlPlanHistory {
+  id           String   @id @default(cuid())
+  planId       String
+  previousData String
+  updatedData  String
+  changedAt    DateTime @default(now())
+
+  @@index([planId])
+  @@index([changedAt])
+}
+
+model SsfnPlan {
+  id                  String   @id @default(cuid())
+  slug                String   @unique
+  name                String
+  speedMbps           Int
+  speedDisplay        String
+  monthlyPrice        Float
+  effectivePrice      Float
+  discountPercent     Float    @default(0)
+  dataAllowance       String
+  fupSpeed            String?
+  validity            String   @default("1 Month")
+  installationCharges Float    @default(0)
+  routerIncluded      Boolean  @default(true)
+  recommended         Boolean  @default(false)
+  isActive            Boolean  @default(true)
+  category            String   @default("HOME")
+  benefits            String
+  displayOrder        Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([speedMbps])
+  @@index([category])
+}
+
+model CoverageArea {
+  id           String   @id @default(cuid())
+  localityName String
+  pinCode      String
+  city         String   @default("Jamshedpur")
+  status       String   @default("AVAILABLE")
+  landmark     String?
+  displayOrder Int      @default(0)
+  updatedAt    DateTime @updatedAt
+
+  @@index([pinCode])
+  @@index([status])
+}
